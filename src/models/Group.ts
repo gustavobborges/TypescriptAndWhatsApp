@@ -1,8 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne, ManyToMany, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable } from 'typeorm';
 
-// import Group from './Group';
+import Account from './Account';
 
-@Entity('groups')
+@Entity('groupsWhats')
 class Group {
    
     @PrimaryGeneratedColumn('uuid')
@@ -13,6 +13,20 @@ class Group {
 
     @Column()
     whatsCode: String;
+
+    @ManyToMany(() => Account, { cascade: true, onDelete: 'CASCADE' })
+    @JoinTable({
+        name: 'accountHasGroup',
+        joinColumn: {
+            name: "groupsWhats_id",
+            referencedColumnName: "id"
+        },
+        inverseJoinColumn: {
+            name: "account_id",
+            referencedColumnName: "id"
+        }
+    })
+    accounts: Account[];
 
     @CreateDateColumn()
     created_at: Date;

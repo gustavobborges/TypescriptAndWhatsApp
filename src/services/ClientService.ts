@@ -40,11 +40,11 @@ class ClientService {
 
 	public async delete({ id }: RequestDelete): Promise<Client> {
 		await getConnection()
-    .createQueryBuilder()
-    .delete()
-    .from(Client)
-    .where({ id: id })
-    .execute();
+			.createQueryBuilder()
+			.delete()
+			.from(Client)
+			.where({ id: id })
+			.execute();
 		return;
 	}
 
@@ -57,12 +57,16 @@ class ClientService {
 		if (checkClientExists) {
 			throw new Error('Name already used.');
 		} else {
+
+			const updateClient = { id: id, name: name };
+			Object.keys(updateClient).forEach(key => updateClient[key] === undefined ? delete updateClient[key] : {});
+
 			await getConnection()
-			.createQueryBuilder()
-			.update(Client)
-			.set({ name: name })
-			.where({ id: id })
-			.execute();
+				.createQueryBuilder()
+				.update(Client)
+				.set(updateClient)
+				.where({ id: id })
+				.execute();
 			return;
 		}
 

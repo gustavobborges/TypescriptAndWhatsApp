@@ -1,11 +1,12 @@
 import { Router } from 'express';
 const clientsRouter = Router();
 import ClientService from '../services/ClientService';
+const clientsService = new ClientService();
+
 
 clientsRouter.get('/', async (req, res) => {
   try {
-      const listClients = new ClientService();
-      const clients = await listClients.listAll();
+      const clients = await clientsService.listAll();
       return res.json(clients);
   } catch (err) {
     return res.status(400).send({ error: err.message });
@@ -16,10 +17,7 @@ clientsRouter.get('/', async (req, res) => {
 clientsRouter.post('/', async (req, res) => {
   try {
     const { name } = req.body;
-
-    const createClient = new ClientService();
-
-    const client = await createClient.create({
+    const client = await clientsService.create({
       name
     });
 
@@ -33,9 +31,7 @@ clientsRouter.delete('/:id', async (req, res) => {
 
   try {
     const { id } = req.params;
-
-    const deleteClient = new ClientService();
-    deleteClient.delete({
+    clientsService.delete({
       id
     });
 
@@ -47,12 +43,10 @@ clientsRouter.delete('/:id', async (req, res) => {
 
 clientsRouter.put('/:id', async (req, res) => {  
   try {
-    const { name } = req.body
+    const { name } = req.body;
     const { id } = req.params;
 
-    const updateClient = new ClientService();
-
-    await updateClient.update({
+    await clientsService.update({
       id, name
     });
     return res.json("Cliente alterado com sucesso!");

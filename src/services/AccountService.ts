@@ -1,6 +1,5 @@
 import { getRepository, getConnection } from 'typeorm';
 import Account from '../models/Account';
-import Client from '../models/Client';
 
 interface RequestCreate {
 	client_id: String;
@@ -55,20 +54,23 @@ class AccountService {
 
 		const accountsRepository = getRepository(Account);
 		const checkAccountExists = await accountsRepository.findOne({
-			where: { name },
+			where: { name },		
 		});
 		if (checkAccountExists) {
 			throw new Error('Name already used.');
 		} else {
+
+			const updateAccount = {id: id, name: name, whatsCode: whatsCode, token: token};
+			Object.keys(updateAccount).forEach(key => updateAccount[key] === undefined ? delete updateAccount[key] : {});
+
 			await getConnection()
 				.createQueryBuilder()
 				.update(Account)
-				.set({ name: name, whatsCode: whatsCode, token: token  })
+				.set(updateAccount)
 				.where({ id: id })
 				.execute();
 			return;
 		}
-
 	}
 }
 

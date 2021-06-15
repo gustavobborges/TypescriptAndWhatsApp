@@ -45,7 +45,7 @@ export class MessageMigration1623356472085 implements MigrationInterface {
             name: 'messageGroup',
             columnNames: ['group_id'],
             referencedColumnNames: ['id'],
-            referencedTableName: 'groups',
+            referencedTableName: 'groupsWhats',
             onDelete: 'SET NULL',
             onUpdate: 'CASCADE',
         }))

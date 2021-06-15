@@ -1,25 +1,21 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 const accountsRouter = Router();
 import AccountService from '../services/AccountService';
+const accountService = new AccountService();
 
 accountsRouter.get('/', async (req, res) => {
   try {
-      const listAccounts = new AccountService();
-      const accounts = await listAccounts.listAll();
+      const accounts = await accountService.listAll();
       return res.json(accounts);
   } catch (err) {
     return res.status(400).send({ error: err.message });
-
   }
 });
 
 accountsRouter.post('/', async (req, res) => {
   try {
     const { name, token, whatsCode, client_id } = req.body;
-
-    const createAccount = new AccountService();
-
-    const account = await createAccount.create({
+    const account = await accountService.create({
       name,
       token,
       whatsCode,
@@ -36,9 +32,7 @@ accountsRouter.delete('/:id', async (req, res) => {
 
   try {
     const { id } = req.params;
-
-    const deleteAccount = new AccountService();
-    deleteAccount.delete({
+    accountService.delete({
       id
     });
 
@@ -48,18 +42,16 @@ accountsRouter.delete('/:id', async (req, res) => {
   }
 });
 
-accountsRouter.put('/:id', async (req, res) => {  
+accountsRouter.put('/:id', async (req: Request, res: Response) => {  
   try {
-    const { name, whatsCode, token } = req.body
+    const { name, whatsCode, token } = req.body;
     const { id } = req.params;
 
-    const updateAccount = new AccountService();
-
-    await updateAccount.update({
+    await accountService.update({
       id, name, whatsCode, token
     });
-    return res.json("Accounte alterado com sucesso");
 
+    return res.json("Conta alterada com sucesso!");
   } catch (err) {
     return res.status(400).send({ error: err.message });
   }

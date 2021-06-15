@@ -8,7 +8,7 @@ export class AccountHasGroup1623358050514 implements MigrationInterface {
                 name: 'accountHasGroup',
                 columns: [
                     {
-                        name: 'group_id',
+                        name: 'groupsWhats_id',
                         type: 'varchar',
                         isNullable: true,
                     },
@@ -16,16 +16,6 @@ export class AccountHasGroup1623358050514 implements MigrationInterface {
                         name: 'account_id',
                         type: 'varchar',
                         isNullable: true,
-                    },
-                    {
-                        name: 'created_at',
-                        type: 'timestamp',
-                        default: 'now()',
-                    },
-                    {
-                        name: 'updated_at',
-                        type: 'timestamp',
-                        default: 'now()',
                     }
                 ]
             })
@@ -42,9 +32,9 @@ export class AccountHasGroup1623358050514 implements MigrationInterface {
 
         await queryRunner.createForeignKey('accountHasGroup', new TableForeignKey({
             name: 'accountHasGroupGroup',
-            columnNames: ['group_id'],
+            columnNames: ['groupsWhats_id'],
             referencedColumnNames: ['id'],
-            referencedTableName: 'groups',
+            referencedTableName: 'groupsWhats',
             onDelete: 'SET NULL',
             onUpdate: 'CASCADE',
         }));
